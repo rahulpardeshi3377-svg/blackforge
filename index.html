@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BlockForge - Minecraft Mods</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #0b0f14;
+    color: white;
+}
+
+header {
+    background: #111820;
+    border-bottom: 1px solid #26313d;
+    padding: 18px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #55e37a;
+}
+
+.logo span {
+    color: white;
+}
+
+.search {
+    width: 45%;
+}
+
+.search input {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 25px;
+    border: 1px solid #344250;
+    background: #18212b;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+.hero {
+    text-align: center;
+    padding: 65px 20px;
+    background: linear-gradient(135deg, #101923, #0b1219);
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: #55e37a;
+}
+
+.hero p {
+    color: #aeb9c5;
+    font-size: 17px;
+}
+
+.filters {
+    padding: 25px 7%;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+select {
+    background: #18212b;
+    color: white;
+    border: 1px solid #344250;
+    padding: 11px 15px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.container {
+    width: 86%;
+    margin: auto;
+}
+
+#status {
+    color: #8e9aa7;
+    margin: 10px 0 20px;
+}
+
+.mods {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #121a23;
+    border: 1px solid #26313d;
+    border-radius: 12px;
+    padding: 15px;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #55e37a;
+}
+
+.card img {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #202a35;
+}
+
+.card h2 {
+    font-size: 19px;
+    margin: 12px 0 8px;
+}
+
+.description {
+    color: #aeb9c5;
+    font-size: 14px;
+    line-height: 1.5;
+    height: 63px;
+    overflow: hidden;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    margin: 14px 0;
+    color: #8794a1;
+    font-size: 13px;
+}
+
+.download {
+    display: block;
+    text-align: center;
+    background: #55e37a;
+    color: #07100a;
+    padding: 11px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.download:hover {
+    background: #6df08d;
+}
+
+.load-area {
+    text-align: center;
+    padding: 35px;
+}
+
+#loadMore {
+    padding: 13px 25px;
+    background: #55e37a;
+    border: 0;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+footer {
+    margin-top: 40px;
+    padding: 30px;
+    text-align: center;
+    background: #111820;
+    color: #7f8b97;
+}
+
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .container {
+        width: 92%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        Block<span>Forge</span>
+    </div>
+
+    <div class="search">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search Minecraft mods..."
+        >
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Minecraft <span>Mods</span></h1>
+    <p>Discover real Minecraft mods from Modrinth.</p>
+</section>
+
+<div class="filters">
+
+    <select id="version">
+        <option value="">All Versions</option>
+        <option value="1.21.11">1.21.11</option>
+        <option value="1.21.10">1.21.10</option>
+        <option value="1.21.8">1.21.8</option>
+        <option value="1.21.5">1.21.5</option>
+        <option value="1.21.4">1.21.4</option>
+        <option value="1.21.1">1.21.1</option>
+        <option value="1.20.6">1.20.6</option>
+        <option value="1.20.4">1.20.4</option>
+    </select>
+
+    <select id="loader">
+        <option value="">All Loaders</option>
+        <option value="fabric">Fabric</option>
+        <option value="forge">Forge</option>
+        <option value="neoforge">NeoForge</option>
+        <option value="quilt">Quilt</option>
+    </select>
+
+    <select id="category">
+        <option value="">All Categories</option>
+        <option value="optimization">Optimization</option>
+        <option value="pvp">PvP</option>
+        <option value="technology">Technology</option>
+        <option value="adventure">Adventure</option>
+        <option value="magic">Magic</option>
+        <option value="storage">Storage</option>
+    </select>
+
+</div>
+
+<div class="container">
+
+    <div id="status">
+        Loading mods...
+    </div>
+
+    <div class="mods" id="mods"></div>
+
+</div>
+
+<div class="load-area">
+    <button id="loadMore">Load More Mods</button>
+</div>
+
+<footer>
+    <p>© 2026 BlockForge • Minecraft Mods</p>
+    <p style="margin-top:8px;">
+        Mods are linked to their original Modrinth pages.
+    </p>
+</footer>
+
+<script>
+
+let allMods = [];
+let shownMods = 0;
+const amountPerPage = 24;
+
+const modsContainer = document.getElementById("mods");
+const status = document.getElementById("status");
+const search = document.getElementById("search");
+const version = document.getElementById("version");
+const loader = document.getElementById("loader");
+const category = document.getElementById("category");
+const loadMore = document.getElementById("loadMore");
+
+async function getMods() {
+
+    try {
+
+        status.innerText = "Loading real mods from Modrinth...";
+
+        const url =
+            "https://api.modrinth.com/v2/search" +
+            "?query=minecraft" +
+            "&limit=100" +
+            "&index=downloads" +
+            "&facets=" +
+            encodeURIComponent('[["project_type:mod"]]');
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("API Error");
+        }
+
+        const data = await response.json();
+
+        allMods = data.hits;
+        shownMods = 0;
+
+        render();
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.innerText =
+            "Could not load mods. Refresh the page.";
+
+    }
+}
+
+function getFilteredMods() {
+
+    const text = search.value.toLowerCase();
+    const selectedVersion = version.value;
+    const selectedLoader = loader.value;
+    const selectedCategory = category.value;
+
+    return allMods.filter(mod => {
+
+        const name =
+            (mod.title || "").toLowerCase();
+
+        const description =
+            (mod.description || "").toLowerCase();
+
+        const matchesSearch =
+            name.includes(text) ||
+            description.includes(text);
+
+        const matchesVersion =
+            !selectedVersion ||
+            (mod.versions &&
+            mod.versions.includes(selectedVersion));
+
+        const matchesLoader =
+            !selectedLoader ||
+            (mod.categories &&
+            mod.categories.includes(selectedLoader));
+
+        const matchesCategory =
+            !selectedCategory ||
+            (mod.categories &&
+            mod.categories.includes(selectedCategory));
+
+        return (
+            matchesSearch &&
+            matchesVersion &&
+            matchesLoader &&
+            matchesCategory
+        );
+    });
+}
+
+function render() {
+
+    const filtered = getFilteredMods();
+
+    if (shownMods === 0) {
+        modsContainer.innerHTML = "";
+    }
+
+    const nextMods = filtered.slice(
+        shownMods,
+        shownMods + amountPerPage
+    );
+
+    nextMods.forEach(mod => {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const icon =
+            mod.icon_url ||
+            "https://cdn.modrinth.com/branding/branding-icon.png";
+
+        const description =
+            mod.description || "Minecraft mod";
+
+        const downloads =
+            Number(mod.downloads || 0).toLocaleString();
+
+        card.innerHTML = `
+
+            <img
+                src="${icon}"
+                alt="${escapeHTML(mod.title)}"
+                onerror="
+                this.src='https://cdn.modrinth.com/branding/branding-icon.png'
+                "
+            >
+
+            <h2>
+                ${escapeHTML(mod.title)}
+            </h2>
+
+            <div class="description">
+                ${escapeHTML(description)}
+            </div>
+
+            <div class="meta">
+                <span>↓ ${downloads}</span>
+                <span>Mod</span>
+            </div>
+
+            <a
+                class="download"
+                href="https://modrinth.com/mod/${encodeURIComponent(mod.slug)}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                View / Download
+            </a>
+        `;
+
+        modsContainer.appendChild(card);
+    });
+
+    shownMods += nextMods.length;
+
+    status.innerText =
+        `Showing ${shownMods} of ${filtered.length} mods`;
+
+    if (shownMods >= filtered.length) {
+        loadMore.style.display = "none";
+    } else {
+        loadMore.style.display = "inline-block";
+    }
+}
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+search.addEventListener("input", () => {
+    shownMods = 0;
+    render();
+});
+
+version.addEventListener("change", () => {
+    shownMods = 0;
+    render();
+});
+
+loader.addEventListener("change", () => {
+    shownMods = 0;
+    render();
+});
+
+category.addEventListener("change", () => {
+    shownMods = 0;
+    render();
+});
+
+loadMore.addEventListener("click", () => {
+    render();
+});
+
+getMods();
+
+</script>
+
+</body>
+</html>
